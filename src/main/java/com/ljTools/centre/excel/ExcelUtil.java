@@ -13,12 +13,23 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcelCompareUtil {
+/**
+ * ExcelUtil
+ */
+public class ExcelUtil {
 
-    private ExcelCompareUtil() {
+    private ExcelUtil() {
     }
 
-    public static <T> List<T> readExcel(String filePath, Class<T> clazz) throws IOException {
+    /**
+     * 简单excel转对象
+     *
+     * @param filePath 文件路径
+     * @param clazz    对象类型
+     * @return 对象列表
+     * @throws IOException io异常
+     */
+    public static <T> List<T> excelToList(String filePath, Class<T> clazz) throws IOException {
         List<T> objectList = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(filePath);
 
@@ -42,6 +53,13 @@ public class ExcelCompareUtil {
         return objectList;
     }
 
+    /**
+     * 一行数据转对象
+     *
+     * @param row   行
+     * @param clazz 对象类型
+     * @return 对象类型
+     */
     private static <T> T createObjectFromRow(Row row, Class<T> clazz) {
         try {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
@@ -66,6 +84,14 @@ public class ExcelCompareUtil {
         }
     }
 
+    /**
+     * 设置字段值
+     *
+     * @param field  字段
+     * @param object 对象
+     * @param cell   单元格
+     * @throws IllegalAccessException 非法访问异常
+     */
     private static void setValueForField(Field field, Object object, Cell cell) throws IllegalAccessException {
         Class<?> fieldType = field.getType();
 
